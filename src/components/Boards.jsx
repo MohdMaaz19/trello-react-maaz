@@ -3,10 +3,16 @@ import { useEffect, useState, useCallback } from "react";
 import { Box, Paper, Typography, Grid } from "@mui/material";
 import Board from "./Board";
 import CreateBoard from "./CreateBoard";
+import { useNavigate } from "react-router-dom";
 
 const Boards = () => {
+  const navigate = useNavigate();
   const [boards, setBoards] = useState([]);
   const [open, setOpen] = useState(false);
+
+  const handleBoardClick = (boardId) => {
+    navigate(`boards/${boardId}`);
+  };
 
   useEffect(() => {
     const fetchBoards = async () => {
@@ -42,7 +48,12 @@ const Boards = () => {
         <Grid container spacing={3} justifyContent="center">
           {boards.map((board) => (
             <Grid item key={board.id} xs={12} sm={6} md={4} lg={3}>
-              <Board board={board} />
+              <Board
+                board={board}
+                onClick={() => {
+                  handleBoardClick(board.id);
+                }}
+              />
             </Grid>
           ))}
           <Grid item xs={12} sm={6} md={4} lg={3}>
@@ -66,7 +77,11 @@ const Boards = () => {
         </Grid>
       </Box>
 
-      <CreateBoard open={open} handleClose={handleClose} setBoards={setBoards} />
+      <CreateBoard
+        open={open}
+        handleClose={handleClose}
+        setBoards={setBoards}
+      />
     </>
   );
 };

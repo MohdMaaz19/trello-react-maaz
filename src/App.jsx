@@ -1,16 +1,19 @@
-import { useState } from 'react'
-import './App.css'
-import Boards from './components/Boards'
-import Navbar from './components/Navbar'
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Boards from "./components/Boards";
+import Lists from "./components/Lists";
+import Navbar from "./components/Navbar";
 
-function App() {
-
+const App = () => {
   return (
-    <>
-      <Navbar/>
-      <Boards/>
-    </>
-  )
-}
+    <Router>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Boards />} />
+        <Route path="/boards/:boardId" element={<Lists />} />
+      </Routes>
+    </Router>
+  );
+};
 
-export default App
+export default App;
