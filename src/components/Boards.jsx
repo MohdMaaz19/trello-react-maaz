@@ -1,9 +1,10 @@
 import axios from "axios";
 import { useEffect, useState, useCallback } from "react";
-import { Box, Paper, Typography, Grid } from "@mui/material";
+import { Box, Paper, Typography } from "@mui/material";
 import Board from "./Board";
 import CreateBoard from "./CreateBoard";
 import { useNavigate } from "react-router-dom";
+import Grid from "@mui/material/Grid2";
 
 const Boards = () => {
   const navigate = useNavigate();
