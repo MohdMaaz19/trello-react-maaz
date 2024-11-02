@@ -1,9 +1,19 @@
-// List.jsx
 import React, { useState, useEffect } from "react";
-import { Paper, Typography, IconButton, Menu, MenuItem, List as MuiList, Button, TextField, Box } from "@mui/material";
+import {
+  Paper,
+  Typography,
+  IconButton,
+  Menu,
+  MenuItem,
+  List as MuiList,
+  Button,
+  TextField,
+  Box,
+} from "@mui/material";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import axios from "axios";
 import Cards from "./Cards";
+import DeleteList from "./DeleteList"; // Importing the DeleteList component
 
 const List = ({ list, setLists }) => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -14,24 +24,6 @@ const List = ({ list, setLists }) => {
 
   const handleClick = (event) => setAnchorEl(event.currentTarget);
   const handleClose = () => setAnchorEl(null);
-
-  const archiveList = async () => {
-    try {
-      await axios.put(
-        `https://api.trello.com/1/lists/${list.id}/closed`,
-        { value: true },
-        {
-          params: {
-            key: import.meta.env.VITE_TRELLO_API_KEY,
-            token: import.meta.env.VITE_TRELLO_TOKEN,
-          },
-        }
-      );
-      setLists((previousList) => previousList.filter((l) => l.id !== list.id));
-    } catch (error) {
-      console.error("Error archiving the list:", error);
-    }
-  };
 
   const fetchCards = async () => {
     try {
@@ -80,11 +72,12 @@ const List = ({ list, setLists }) => {
       elevation={3}
       sx={{
         padding: "20px",
-        maxWidth: "300px",
+        minWidth: "300px",
         textAlign: "center",
-        bgcolor: "grey",
+        bgcolor: "#0079BF",
         color: "white",
         position: "relative",
+        cursor: "pointer",
       }}
     >
       <Typography variant="h5" gutterBottom>
@@ -110,21 +103,27 @@ const List = ({ list, setLists }) => {
         <MenuItem
           onClick={() => {
             handleClose();
-            archiveList();
           }}
         >
-          Archive this list
+          <DeleteList listId={list.id} setLists={setLists} />
         </MenuItem>
       </Menu>
 
       <MuiList sx={{ marginTop: "10px" }}>
         {cards.map((card) => (
-          <Cards key={card.id} card={card} setCards={setCards}/>
+          <Cards key={card.id} card={card} setCards={setCards} />
         ))}
       </MuiList>
 
       {showAddCardInput ? (
-        <Box sx={{ display: "flex", flexDirection: "column", gap: "10px", marginTop: "10px" }}>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "10px",
+            marginTop: "10px",
+          }}
+        >
           <TextField
             variant="outlined"
             size="small"
@@ -136,7 +135,11 @@ const List = ({ list, setLists }) => {
             <Button variant="contained" color="primary" onClick={handleAddCard}>
               Add
             </Button>
-            <Button variant="outlined" color="secondary" onClick={() => setShowAddCardInput(false)}>
+            <Button
+              variant="outlined"
+              color="secondary"
+              onClick={() => setShowAddCardInput(false)}
+            >
               Cancel
             </Button>
           </Box>

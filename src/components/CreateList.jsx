@@ -1,13 +1,12 @@
-import {React,useState} from "react";
-import { Box, Paper, TextField, IconButton } from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
+import React, { useState } from "react";
+import { Box, Paper, TextField, Button, IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import axios from "axios";
 
-const CreateList = ({ setIsAdding, setLists,boardId }) => {
-
+const CreateList = ({ setIsAdding, setLists, boardId }) => {
   const [newListName, setNewListName] = useState(""); // State for the new list name
   const { VITE_TRELLO_API_KEY, VITE_TRELLO_TOKEN } = import.meta.env;
+
   const handleAddList = async () => {
     if (newListName.trim() === "") return; // Prevent empty lists
     try {
@@ -23,7 +22,7 @@ const CreateList = ({ setIsAdding, setLists,boardId }) => {
           },
         }
       );
-      setLists((previousList)=>[...previousList, response.data]);
+      setLists((previousList) => [...previousList, response.data]);
       setNewListName("");
       setIsAdding(false);
     } catch (error) {
@@ -36,9 +35,9 @@ const CreateList = ({ setIsAdding, setLists,boardId }) => {
       elevation={3}
       sx={{
         padding: "20px",
-        maxWidth: "300px",
+        minWidth: "300px",
         textAlign: "center",
-        bgcolor: "grey",
+        bgcolor: "#00B0E1",
         color: "white",
         display: "flex",
         flexDirection: "column",
@@ -54,9 +53,14 @@ const CreateList = ({ setIsAdding, setLists,boardId }) => {
         onChange={(e) => setNewListName(e.target.value)}
       />
       <Box sx={{ display: "flex", gap: "10px" }}>
-        <IconButton color="primary" onClick={handleAddList}>
-          <AddIcon />
-        </IconButton>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleAddList}
+          sx={{ bgcolor: "white", color: "#00B0E1" }}
+        >
+          Add List
+        </Button>
         <IconButton color="error" onClick={() => setIsAdding(false)}>
           <CloseIcon />
         </IconButton>

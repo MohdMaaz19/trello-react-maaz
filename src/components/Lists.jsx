@@ -2,13 +2,12 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { Box, Paper, Typography } from "@mui/material";
-import Grid from "@mui/material/Grid2"
 import List from "./List";
 import CreateList from "./CreateList";
 
 const Lists = () => {
   const [lists, setLists] = useState([]);
-  const [isAdding, setIsAdding] = useState(false); // State to manage form visibility
+  const [isAdding, setIsAdding] = useState(false); 
   const { boardId } = useParams();
   const { VITE_TRELLO_API_KEY, VITE_TRELLO_TOKEN } = import.meta.env;
 
@@ -34,24 +33,36 @@ const Lists = () => {
 
   return (
     <Box p={4}>
-      <Grid container spacing={3} justifyContent="center">
+      <Box
+        sx={{
+          display: 'flex',
+          overflowX: 'scroll',
+          minHeight: '80vh',
+          gap: '16px',
+          padding: '16px',
+          position: 'relative',
+          bottom: 0, 
+          borderTop: '1px solid #ddd', 
+          boxShadow: '0 2px 5px rgba(0,0,0,0.1)', 
+    
+        }}
+      >
         {lists.map((list) => (
-          <Grid item key={list.id} xs={12} sm={6} md={4} lg={3}>
+          <Box key={list.id} sx={{ flexShrink: 0 }}>
             <List list={list} setLists={setLists} />
-          </Grid>
+          </Box>
         ))}
-        <Grid item xs={12} sm={6} md={4} lg={3}>
+        <Box sx={{ flexShrink: 0 }}>
           {isAdding ? (
-            <CreateList  setIsAdding={setIsAdding} setLists={setLists} boardId={boardId}/>
+            <CreateList setIsAdding={setIsAdding} setLists={setLists} boardId={boardId} />
           ) : (
             <Paper
               elevation={3}
               sx={{
                 padding: "20px",
-                maxWidth: "300px",
-                aspectRatio: "1:1",
+                minWidth: "300px",
                 textAlign: "center",
-                bgcolor: "grey",
+                bgcolor: "#00B0E1",
                 color: "white",
                 cursor: "pointer",
               }}
@@ -62,8 +73,8 @@ const Lists = () => {
               </Typography>
             </Paper>
           )}
-        </Grid>
-      </Grid>
+        </Box>
+      </Box>
     </Box>
   );
 };

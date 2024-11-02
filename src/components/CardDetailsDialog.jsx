@@ -10,6 +10,8 @@ import {
   TextField,
   IconButton,
   Checkbox,
+  LinearProgress,
+  Box,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import axios from "axios";
@@ -65,6 +67,12 @@ const CardDetailsDialog = ({ open, onClose, card }) => {
 
     fetchChecklistsAndItems();
   }, [open, card.id]);
+
+  const calculateProgress = (checklistId) => {
+    const items = checkItems[checklistId] || [];
+    const completedItems = items.filter((item) => item.state === "complete").length;
+    return items.length > 0 ? (completedItems / items.length) * 100 : 0;
+  };
 
   const handleAddChecklist = async () => {
     if (newChecklistTitle.trim()) {
@@ -210,81 +218,91 @@ const CardDetailsDialog = ({ open, onClose, card }) => {
         </Button>
 
         <List sx={{ marginTop: 2 }}>
-          {checklists.map((checklist) => (
-            <React.Fragment key={checklist.id}>
-              <ListItem
-                secondaryAction={
-                  <IconButton onClick={() => handleDeleteChecklist(checklist.id)} aria-label="delete">
-                    <DeleteIcon />
-                  </IconButton>
-                }
+          {checklists.map((checklist) => {
+            const progress = calculateProgress(checklist.id);
+            return (
+              <Box
+                key={checklist.id}
+                sx={{
+                  border: "1px solid #ccc",
+                  borderRadius: "8px",
+                  padding: 2,
+                  marginBottom: 2,
+                }}
               >
-                <ListItemText primary={checklist.name} />
-              </ListItem>
-              {checkItems[checklist.id]?.map((item) => (
-                <ListItem key={item.id} sx={{ paddingLeft: 4 }}
+                <ListItem
                   secondaryAction={
-                    <IconButton onClick={() => handleDeleteCheckItem(checklist.id, item.id)} aria-label="delete">
+                    <IconButton onClick={() => handleDeleteChecklist(checklist.id)} aria-label="delete">
                       <DeleteIcon />
                     </IconButton>
                   }
                 >
-                  <Checkbox
-                    checked={item.state === "complete"}
-                    onChange={() => handleToggleCheckItem(checklist.id, item)}
-                  />
-                  <ListItemText primary={item.name} />
+                  <ListItemText primary={checklist.name} />
                 </ListItem>
-              ))}
 
-              <ListItem>
-                <TextField
-                  variant="outlined"
-                  size="small"
-                  value={activeChecklistId === checklist.id ? newCheckItemTitle : ""}
-                  onChange={(e) => {
-                    setNewCheckItemTitle(e.target.value);
-                    setActiveChecklistId(checklist.id);
-                  }}
-                  label="Add Item"
-                  fullWidth
-                />
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={() => handleAddCheckItem(checklist.id)}
-                  sx={{ marginLeft: 1 }}
-                >
-                  Add
-                </Button>
-              </ListItem>
-            </React.Fragment>
-          ))}
+                <Box display="flex" alignItems="center" sx={{ marginBottom: 1 }}>
+                <Box sx={{ marginRight: 2, fontWeight: '200' }}>
+                    {Math.round(progress)}%
+                  </Box>
+                  <LinearProgress
+                    variant="determinate"
+                    value={progress}
+                    sx={{ flex: 1, height: 8, borderRadius: 4 }}
+                  />
+                </Box>
+
+                {checkItems[checklist.id]?.map((item) => (
+                  <ListItem key={item.id} sx={{ paddingLeft: 4 }}
+                    secondaryAction={
+                      <IconButton onClick={() => handleDeleteCheckItem(checklist.id, item.id)} aria-label="delete">
+                        <DeleteIcon />
+                      </IconButton>
+                    }
+                  >
+                    <Checkbox
+                      checked={item.state === "complete"}
+                      onChange={() => handleToggleCheckItem(checklist.id, item)}
+                    />
+                    <ListItemText primary={item.name} />
+                  </ListItem>
+                ))}
+
+                <ListItem>
+                  <TextField
+                    variant="outlined"
+                    size="small"
+                    value={activeChecklistId === checklist.id ? newCheckItemTitle : ""}
+                    onChange={(e) => {
+                      setNewCheckItemTitle(e.target.value);
+                      setActiveChecklistId(checklist.id);
+                    }}
+                    label="Add Item"
+                    fullWidth
+                  />
+                  <Button onClick={() => handleAddCheckItem(checklist.id)}>Add</Button>
+                </ListItem>
+              </Box>
+            );
+          })}
         </List>
-      </DialogContent>
 
-      <Dialog
-        open={checklistDialogOpen}
-        onClose={() => setChecklistDialogOpen(false)}
-      >
-        <DialogTitle>Add Checklist</DialogTitle>
-        <DialogContent>
-          <TextField
-            fullWidth
-            value={newChecklistTitle}
-            onChange={(e) => setNewChecklistTitle(e.target.value)}
-            label="Checklist Title"
-          />
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleAddChecklist}
-            sx={{ marginTop: 2 }}
-          >
-            Add
-          </Button>
-        </DialogContent>
-      </Dialog>
+        <Dialog open={checklistDialogOpen} onClose={() => setChecklistDialogOpen(false)}>
+          <DialogTitle>Add New Checklist</DialogTitle>
+          <DialogContent>
+            <TextField
+              fullWidth
+              value={newChecklistTitle}
+              onChange={(e) => setNewChecklistTitle(e.target.value)}
+              label="Checklist Title"
+              variant="outlined"
+              size="small"
+            />
+            <Button variant="contained" color="primary" onClick={handleAddChecklist} sx={{ marginTop: 2 }}>
+              Add
+            </Button>
+          </DialogContent>
+        </Dialog>
+      </DialogContent>
     </Dialog>
   );
 };
