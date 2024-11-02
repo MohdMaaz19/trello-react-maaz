@@ -62,16 +62,20 @@ const Boards = () => {
               elevation={3}
               sx={{
                 padding: "20px",
-                maxWidth: "300px",
-                aspectRatio: "1:1",
+                minWidth: "300px",
+                minHeight: "300px",
                 textAlign: "center",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                cursor: "pointer",
                 bgcolor: "grey",
                 color: "white",
               }}
               onClick={handleClickOpen}
             >
               <Typography variant="h5" gutterBottom>
-                Create a new Board +
+                Create a new Board
               </Typography>
             </Paper>
           </Grid>

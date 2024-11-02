@@ -1,5 +1,5 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -15,6 +15,7 @@ import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 
 const Navbar = () => {
+  const navigate = useNavigate();
   const pages = ["BOARDS"];
   const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
@@ -37,6 +38,11 @@ const Navbar = () => {
     setAnchorElUser(null);
   };
 
+  // Redirect function for "TRELLO" and "BOARDS"
+  const handleRedirect = () => {
+    navigate('/');
+  };
+
   return (
     <>
       <AppBar position="static">
@@ -46,7 +52,7 @@ const Navbar = () => {
               variant="h6"
               noWrap
               component="a"
-              href="#app-bar-with-responsive-menu"
+              onClick={handleRedirect} // Redirect on click
               sx={{
                 mr: 2,
                 display: { xs: "none", md: "flex" },
@@ -55,6 +61,7 @@ const Navbar = () => {
                 letterSpacing: ".3rem",
                 color: "inherit",
                 textDecoration: "none",
+                cursor: "pointer",
               }}
             >
               TRELLO
@@ -88,7 +95,7 @@ const Navbar = () => {
                 sx={{ display: { xs: "block", md: "none" } }}
               >
                 {pages.map((page) => (
-                  <MenuItem key={page} onClick={handleCloseNavMenu}>
+                  <MenuItem key={page} onClick={() => { handleCloseNavMenu(); handleRedirect(); }}>
                     <Typography sx={{ textAlign: "center" }}>{page}</Typography>
                   </MenuItem>
                 ))}
@@ -99,7 +106,7 @@ const Navbar = () => {
               variant="h5"
               noWrap
               component="a"
-              href="#app-bar-with-responsive-menu"
+              onClick={handleRedirect} // Redirect on click for small screens
               sx={{
                 mr: 2,
                 display: { xs: "flex", md: "none" },
@@ -109,15 +116,16 @@ const Navbar = () => {
                 letterSpacing: ".3rem",
                 color: "inherit",
                 textDecoration: "none",
+                cursor: "pointer",
               }}
             >
-              LOGO
+              TRELLO
             </Typography>
             <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
               {pages.map((page) => (
                 <Button
                   key={page}
-                  onClick={handleCloseNavMenu}
+                  onClick={() => { handleCloseNavMenu(); handleRedirect(); }}
                   sx={{ my: 2, color: "white", display: "block" }}
                 >
                   {page}

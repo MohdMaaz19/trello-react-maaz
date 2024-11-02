@@ -9,9 +9,14 @@ const Board = ({board,onClick}) => {
             elevation={3}
             sx={{
               padding: "20px",
-              maxWidth: "300px",
+              minWidth: "300px",
+              minHeight: "300px",
               textAlign: "center",
-              bgcolor: "purple",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              cursor: "pointer",
+              bgcolor: "#0079BF",
               backgroundImage:`url(${board.prefs.backgroundImage})`,
               backgroundSize: "cover",
               color: "white",
