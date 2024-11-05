@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState, useCallback } from "react";
-import { Box, Paper, Typography } from "@mui/material";
+import { Box, Paper, Typography, CircularProgress } from "@mui/material"; // Import CircularProgress
 import Board from "./Board";
 import CreateBoard from "./CreateBoard";
 import { useNavigate } from "react-router-dom";
@@ -10,6 +10,7 @@ const Boards = () => {
   const navigate = useNavigate();
   const [boards, setBoards] = useState([]);
   const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(true); // State for loading
 
   const handleBoardClick = (boardId) => {
     navigate(`boards/${boardId}`);
@@ -17,6 +18,7 @@ const Boards = () => {
 
   useEffect(() => {
     const fetchBoards = async () => {
+      setLoading(true); // Set loading to true before fetching
       try {
         const response = await axios.get(
           `https://api.trello.com/1/members/me/boards`,
@@ -30,6 +32,8 @@ const Boards = () => {
         setBoards(response.data);
       } catch (error) {
         console.error("Error fetching boards:", error);
+      } finally {
+        setLoading(false); // Set loading to false after data is fetched
       }
     };
     fetchBoards();
@@ -42,6 +46,22 @@ const Boards = () => {
   const handleClose = useCallback(() => {
     setOpen(false);
   }, []);
+
+  if (loading) {
+    return (
+      <Box 
+        p={4}
+        sx={{
+          display: 'flex', 
+          justifyContent: 'center', 
+          alignItems: 'center', 
+          height: '100vh'
+        }}
+      >
+        <CircularProgress /> {/* Material-UI loader */}
+      </Box>
+    );
+  }
 
   return (
     <>
@@ -57,6 +77,7 @@ const Boards = () => {
               />
             </Grid>
           ))}
+          {/* Move the Create Board button to be part of the grid items */}
           <Grid xs={12} sm={6} md={4} lg={3}>
             <Paper
               elevation={3}
