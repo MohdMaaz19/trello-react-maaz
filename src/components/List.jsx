@@ -2,28 +2,19 @@ import React, { useState, useEffect } from "react";
 import {
   Paper,
   Typography,
-  IconButton,
-  Menu,
-  MenuItem,
   List as MuiList,
   Button,
   TextField,
   Box,
 } from "@mui/material";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import axios from "axios";
 import Cards from "./Cards";
-import DeleteList from "./DeleteList"; // Importing the DeleteList component
+import DeleteList from "./DeleteList"; // Import the DeleteList component
 
 const List = ({ list, setLists }) => {
-  const [anchorEl, setAnchorEl] = useState(null);
-  const open = Boolean(anchorEl);
   const [cards, setCards] = useState([]);
   const [showAddCardInput, setShowAddCardInput] = useState(false);
   const [newCardName, setNewCardName] = useState("");
-
-  const handleClick = (event) => setAnchorEl(event.currentTarget);
-  const handleClose = () => setAnchorEl(null);
 
   const fetchCards = async () => {
     try {
@@ -84,30 +75,8 @@ const List = ({ list, setLists }) => {
         {list.name}
       </Typography>
 
-      <IconButton
-        aria-label="more options"
-        aria-controls="more-options-menu"
-        aria-haspopup="true"
-        onClick={handleClick}
-        sx={{ position: "absolute", top: -10, right: -5, color: "white" }}
-      >
-        <MoreHorizIcon />
-      </IconButton>
-
-      <Menu
-        id="more-options-menu"
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-      >
-        <MenuItem
-          onClick={() => {
-            handleClose();
-          }}
-        >
-          <DeleteList listId={list.id} setLists={setLists} />
-        </MenuItem>
-      </Menu>
+      {/* Include the DeleteList component */}
+      <DeleteList list={list} setLists={setLists} />
 
       <MuiList sx={{ marginTop: "10px" }}>
         {cards.map((card) => (

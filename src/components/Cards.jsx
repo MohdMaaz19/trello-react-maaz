@@ -1,49 +1,34 @@
 import React, { useState } from "react";
-import { List } from "@mui/material";
-import Card from "./Card";
-import CardDetails from "./CardDetails";
-import axios from "axios";
+import { ListItem, ListItemText } from "@mui/material";
+import CardDetailsDialog from "./CardDetailsDialog";
+import DeleteCard from "./DeleteCard";
 
-const Cards = ({ cards, setCards }) => {
-  const [selectedCard, setSelectedCard] = useState(null);
-
-  const handleDeleteCard = async (event, cardId) => {
-    event.stopPropagation();
-    try {
-      await axios.delete(`https://api.trello.com/1/cards/${cardId}`, {
-        params: {
-          key: import.meta.env.VITE_TRELLO_API_KEY,
-          token: import.meta.env.VITE_TRELLO_TOKEN,
-        },
-      });
-      setCards((prevCards) => prevCards.filter((card) => card.id !== cardId));
-    } catch (error) {
-      console.error("Error deleting card:", error);
-    }
-  };
-
-  const handleAddChecklist = () => {
-    // Logic to open checklist dialog
-  };
+const Cards = ({ card, setCards }) => {
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   return (
     <>
-      <List>
-        {cards.map((card) => (
-          <Card
-            key={card.id}
-            card={{ ...card, onClick: () => setSelectedCard(card), onAddChecklist: handleAddChecklist }}
-            onDelete={handleDeleteCard}
-          />
-        ))}
-      </List>
-      {selectedCard && (
-        <CardDetails
-          open={Boolean(selectedCard)}
-          onClose={() => setSelectedCard(null)}
-          card={selectedCard}
-        />
-      )}
+      <ListItem
+        onClick={() => setDialogOpen(true)} 
+        secondaryAction={<DeleteCard card={card} setCards={setCards} />} 
+        sx={{
+          bgcolor: "#005A8D",
+          borderRadius: "8px",
+          boxShadow: "0px 2px 5px rgba(0,0,0,0.1)",
+          marginBottom: "10px",
+          padding: "10px",
+          "&:hover": {
+            bgcolor: "#003554",
+          },
+        }}
+      >
+        <ListItemText primary={card.name} />
+      </ListItem>
+      <CardDetailsDialog
+        open={dialogOpen}
+        onClose={() => setDialogOpen(false)}
+        card={card}
+      />
     </>
   );
 };

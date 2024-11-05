@@ -48,7 +48,7 @@ const Boards = () => {
       <Box p={4}>
         <Grid container spacing={3} justifyContent="center">
           {boards.map((board) => (
-            <Grid item key={board.id} xs={12} sm={6} md={4} lg={3}>
+            <Grid key={board.id} xs={12} sm={6} md={4} lg={3}>
               <Board
                 board={board}
                 onClick={() => {
@@ -57,7 +57,7 @@ const Boards = () => {
               />
             </Grid>
           ))}
-          <Grid item xs={12} sm={6} md={4} lg={3}>
+          <Grid xs={12} sm={6} md={4} lg={3}>
             <Paper
               elevation={3}
               sx={{
