@@ -1,17 +1,14 @@
 import React from "react";
 import { ListItem, ListItemText, Checkbox } from "@mui/material";
-import DeleteChecklistItem from "./DeleteChecklistItem"; // Import the delete component
+import DeleteChecklistItem from "./DeleteChecklistItem";
 import axios from "axios";
 
-
-
-const ChecklistItem = ({ card ,item, checklistId, setCheckItems, checkItem }) => {
-  // Function to handle toggling the check item
+const ChecklistItem = ({ card, item, setCheckItems,checklistId }) => {
   const handleToggleCheckItem = async () => {
     try {
       const newState = item.state === "complete" ? "incomplete" : "complete";
       await axios.put(
-        `https://api.trello.com/1/cards/${card.id}/checkItem/${checkItem.id}`,
+        `https://api.trello.com/1/cards/${card.id}/checkItem/${item.id}`,
         { state: newState },
         {
           params: {
@@ -39,11 +36,7 @@ const ChecklistItem = ({ card ,item, checklistId, setCheckItems, checkItem }) =>
         onChange={handleToggleCheckItem} // Call the toggle function on change
       />
       <ListItemText primary={item.name} />
-      <DeleteChecklistItem 
-        item={item} 
-        checklistId={checklistId} 
-        setCheckItems={setCheckItems} 
-      />
+      <DeleteChecklistItem item={item} setCheckItems={setCheckItems} checklistId={checklistId}/>
     </ListItem>
   );
 };
