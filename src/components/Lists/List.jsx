@@ -8,8 +8,8 @@ import {
   Box,
 } from "@mui/material";
 import axios from "axios";
-import Cards from "./Cards";
-import DeleteList from "./DeleteList"; // Import the DeleteList component
+import Cards from "../Cards/Cards";
+import DeleteList from "./DeleteList"; 
 
 const List = ({ list, setLists }) => {
   const [cards, setCards] = useState([]);

@@ -2,8 +2,8 @@
 
 import { React, useState, useEffect } from "react";
 import { Dialog, DialogTitle, DialogContent } from "@mui/material";
-import AllChecklist from "./AllChecklist";
-import CreateChecklist from "./CreateChecklist"; // Import CreateChecklist
+import AllChecklist from "../Checklist/AllChecklist";
+import CreateChecklist from "../Checklist/CreateChecklist"; // Import CreateChecklist
 import axios from "axios";
 
 const CardDetailsDialog = ({ open, onClose, card }) => {
@@ -37,7 +37,11 @@ const CardDetailsDialog = ({ open, onClose, card }) => {
       <DialogTitle>{card.name}</DialogTitle>
       <DialogContent>
         <CreateChecklist cardId={card.id} setChecklists={setChecklists} />
-        <AllChecklist card={card} checklists={checklists} setChecklists={setChecklists} />
+        <AllChecklist
+          card={card}
+          checklists={checklists}
+          setChecklists={setChecklists}
+        />
       </DialogContent>
     </Dialog>
   );

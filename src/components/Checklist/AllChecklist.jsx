@@ -1,10 +1,8 @@
-// AllChecklist.jsx
-
 import React from "react";
 import { List } from "@mui/material";
 import Checklist from "./Checklist";
 
-const AllChecklist = ({ card,checklists, setChecklists }) => {
+const AllChecklist = ({ card, checklists, setChecklists }) => {
   return (
     <List>
       {checklists.map((checklist) => (

@@ -9,8 +9,8 @@ const Cards = ({ card, setCards }) => {
   return (
     <>
       <ListItem
-        onClick={() => setDialogOpen(true)} 
-        secondaryAction={<DeleteCard card={card} setCards={setCards} />} 
+        onClick={() => setDialogOpen(true)}
+        secondaryAction={<DeleteCard card={card} setCards={setCards} />}
         sx={{
           bgcolor: "#005A8D",
           borderRadius: "8px",

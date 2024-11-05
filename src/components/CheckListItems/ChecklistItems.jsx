@@ -28,14 +28,23 @@ const ChecklistItems = ({ checklistId, card }) => {
     fetchCheckItems();
   }, [checklistId]);
 
-  const completedItemsCount = checkItems.filter(item => item.state === "complete").length;
+  const completedItemsCount = checkItems.filter(
+    (item) => item.state === "complete"
+  ).length;
   const totalItemsCount = checkItems.length;
-  const completionPercentage = totalItemsCount > 0 ? (completedItemsCount / totalItemsCount) * 100 : 0;
+  const completionPercentage =
+    totalItemsCount > 0 ? (completedItemsCount / totalItemsCount) * 100 : 0;
 
   return (
     <Box>
-      <Typography variant="body2" color="textSecondary">{`${Math.round(completionPercentage)}%`}</Typography>
-      <LinearProgress variant="determinate" value={completionPercentage} sx={{ marginBottom: 2 }} />
+      <Typography variant="body2" color="textSecondary">{`${Math.round(
+        completionPercentage
+      )}%`}</Typography>
+      <LinearProgress
+        variant="determinate"
+        value={completionPercentage}
+        sx={{ marginBottom: 2 }}
+      />
 
       <List>
         {checkItems.map((item) => (
@@ -49,7 +58,10 @@ const ChecklistItems = ({ checklistId, card }) => {
         ))}
       </List>
 
-      <CreateChecklistItem checklistId={checklistId} setCheckItems={setCheckItems} />
+      <CreateChecklistItem
+        checklistId={checklistId}
+        setCheckItems={setCheckItems}
+      />
     </Box>
   );
 };

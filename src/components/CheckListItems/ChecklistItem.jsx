@@ -3,7 +3,7 @@ import { ListItem, ListItemText, Checkbox } from "@mui/material";
 import DeleteChecklistItem from "./DeleteChecklistItem";
 import axios from "axios";
 
-const ChecklistItem = ({ card, item, setCheckItems,checklistId }) => {
+const ChecklistItem = ({ card, item, setCheckItems, checklistId }) => {
   const handleToggleCheckItem = async () => {
     try {
       const newState = item.state === "complete" ? "incomplete" : "complete";
@@ -21,7 +21,9 @@ const ChecklistItem = ({ card, item, setCheckItems,checklistId }) => {
       // Update the state of check items locally
       setCheckItems((prevItems) =>
         prevItems.map((checkItem) =>
-          checkItem.id === item.id ? { ...checkItem, state: newState } : checkItem
+          checkItem.id === item.id
+            ? { ...checkItem, state: newState }
+            : checkItem
         )
       );
     } catch (error) {
@@ -36,7 +38,11 @@ const ChecklistItem = ({ card, item, setCheckItems,checklistId }) => {
         onChange={handleToggleCheckItem} // Call the toggle function on change
       />
       <ListItemText primary={item.name} />
-      <DeleteChecklistItem item={item} setCheckItems={setCheckItems} checklistId={checklistId}/>
+      <DeleteChecklistItem
+        item={item}
+        setCheckItems={setCheckItems}
+        checklistId={checklistId}
+      />
     </ListItem>
   );
 };
