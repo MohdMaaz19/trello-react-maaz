@@ -1,31 +1,17 @@
-// CreateChecklist.jsx
-
 import React, { useState } from "react";
 import { TextField, Button, Box } from "@mui/material";
-import axios from "axios";
+import { createChecklist } from "../../API/checklistApi"; // Import the API function
 
-const CreateChecklist = ({ cardId, setChecklists }) => {
+const CreateChecklist = ({ cardId, setChecklists, navigate }) => {
   const [checklistName, setChecklistName] = useState("");
 
   const handleCreateChecklist = async () => {
     if (!checklistName.trim()) return;
 
-    try {
-      const response = await axios.post(
-        `https://api.trello.com/1/cards/${cardId}/checklists`,
-        { name: checklistName },
-        {
-          params: {
-            key: import.meta.env.VITE_TRELLO_API_KEY,
-            token: import.meta.env.VITE_TRELLO_TOKEN,
-          },
-        }
-      );
-
-      setChecklists((prevChecklists) => [...prevChecklists, response.data]);
+    const newChecklist = await createChecklist(cardId, checklistName, navigate);
+    if (newChecklist) {
+      setChecklists((prevChecklists) => [...prevChecklists, newChecklist]);
       setChecklistName(""); // Clear the input field
-    } catch (error) {
-      console.error("Error adding checklist:", error);
     }
   };
 

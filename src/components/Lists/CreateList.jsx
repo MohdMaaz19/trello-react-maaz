@@ -1,32 +1,21 @@
 import React, { useState } from "react";
 import { Box, Paper, TextField, Button, IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import axios from "axios";
+import { createList } from "../../API/listApi"; // Import the createList function
 
-const CreateList = ({ setIsAdding, setLists, boardId }) => {
+const CreateList = ({ setIsAdding, setLists, boardId, navigate }) => { // Add navigate as a prop
   const [newListName, setNewListName] = useState(""); // State for the new list name
-  const { VITE_TRELLO_API_KEY, VITE_TRELLO_TOKEN } = import.meta.env;
 
   const handleAddList = async () => {
     if (newListName.trim() === "") return; // Prevent empty lists
     try {
-      const response = await axios.post(
-        `https://api.trello.com/1/lists`,
-        null,
-        {
-          params: {
-            name: newListName,
-            idBoard: boardId,
-            key: VITE_TRELLO_API_KEY,
-            token: VITE_TRELLO_TOKEN,
-          },
-        }
-      );
-      setLists((previousList) => [...previousList, response.data]);
+      const newList = await createList(boardId, newListName, navigate); // Use createList
+      setLists((previousList) => [...previousList, newList]);
       setNewListName("");
       setIsAdding(false);
     } catch (error) {
-      console.error("Error adding new list:", error);
+      console.error("Error adding new list:", error.message);
+      navigate('/ErrorPage'); // Navigate to error page on error
     }
   };
 

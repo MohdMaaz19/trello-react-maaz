@@ -7,28 +7,23 @@ import {
   TextField,
   Button,
 } from "@mui/material";
-import axios from "axios";
+import { createBoard } from "../../API/boardsApi"; 
+import { useNavigate } from "react-router-dom"; 
 
 const CreateBoard = ({ open, handleClose, setBoards }) => {
   const [newBoardName, setNewBoardName] = useState("");
+  const navigate = useNavigate(); 
 
   const handleCreateBoard = async () => {
-    if (!newBoardName.trim()) {
-      console.error("Board name cannot be empty.");
-      return;
-    }
-
     try {
-      const response = await axios.post(
-        `https://api.trello.com/1/boards/?name=${newBoardName}&key=${
-          import.meta.env.VITE_TRELLO_API_KEY
-        }&token=${import.meta.env.VITE_TRELLO_TOKEN}`
-      );
-      setBoards((prevBoards) => [...prevBoards, response.data]);
-      setNewBoardName(""); 
-      handleClose();
-    } catch (error) {
-      console.error("Error creating board:", error);
+      const boardData = await createBoard(newBoardName, navigate);
+      if (boardData) {
+        setBoards((prevBoards) => [...prevBoards, boardData]);
+        setNewBoardName(""); 
+        handleClose();
+      }
+    } catch {
+      navigate('/ErrorPage'); 
     }
   };
 

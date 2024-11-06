@@ -1,23 +1,17 @@
 import React from "react";
 import { IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
-import axios from "axios";
+import { deleteCard } from "../../API/cardsApi";
+import { useNavigate } from "react-router-dom";
 
 const DeleteCard = ({ card, setCards }) => {
+  const navigate = useNavigate();
+
   const handleDeleteCard = async (event) => {
-    event.stopPropagation(); // Prevent click from propagating to ListItem
-    try {
-      await axios.delete(`https://api.trello.com/1/cards/${card.id}`, {
-        params: {
-          key: import.meta.env.VITE_TRELLO_API_KEY,
-          token: import.meta.env.VITE_TRELLO_TOKEN,
-        },
-      });
-      setCards((previousState) =>
-        previousState.filter((c) => c.id !== card.id)
-      );
-    } catch (error) {
-      console.error("Error deleting card:", error);
+    event.stopPropagation();
+    const success = await deleteCard(card.id, navigate);
+    if (success) {
+      setCards((prevCards) => prevCards.filter((c) => c.id !== card.id));
     }
   };
 

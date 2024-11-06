@@ -1,10 +1,10 @@
-import axios from "axios";
 import { useEffect, useState, useCallback } from "react";
 import { Box, Paper, Typography, CircularProgress } from "@mui/material"; 
 import Board from "./Board";
 import CreateBoard from "./CreateBoard";
 import { useNavigate } from "react-router-dom";
 import Grid from "@mui/material/Grid2";
+import { getBoards } from "../../API/boardsApi";
 
 const Boards = () => {
   const navigate = useNavigate();
@@ -17,27 +17,17 @@ const Boards = () => {
   };
 
   useEffect(() => {
-    const fetchBoards = async () => {
+    const loadBoards = async () => {
       setLoading(true); 
-      try {
-        const response = await axios.get(
-          `https://api.trello.com/1/members/me/boards`,
-          {
-            params: {
-              key: import.meta.env.VITE_TRELLO_API_KEY,
-              token: import.meta.env.VITE_TRELLO_TOKEN,
-            },
-          }
-        );
-        setBoards(response.data);
-      } catch (error) {
-        console.error("Error fetching boards:", error);
-      } finally {
-        setLoading(false); 
-      }
+      await getBoards(navigate).then(data => {
+        if (data) {
+          setBoards(data); 
+        }
+      });
+      setLoading(false); 
     };
-    fetchBoards();
-  }, []);
+    loadBoards();
+  }, [navigate]);
 
   const handleClickOpen = useCallback(() => {
     setOpen(true);

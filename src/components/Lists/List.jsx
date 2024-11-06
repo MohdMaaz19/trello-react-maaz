@@ -7,50 +7,31 @@ import {
   TextField,
   Box,
 } from "@mui/material";
-import axios from "axios";
 import Cards from "../Cards/Cards";
 import DeleteList from "./DeleteList"; 
+import { createCard,getCards} from "../../API/cardsApi"
 
-const List = ({ list, setLists }) => {
+const List = ({ list, setLists, navigate }) => {
   const [cards, setCards] = useState([]);
   const [showAddCardInput, setShowAddCardInput] = useState(false);
   const [newCardName, setNewCardName] = useState("");
 
   const fetchCards = async () => {
     try {
-      const response = await axios.get(
-        `https://api.trello.com/1/lists/${list.id}/cards`,
-        {
-          params: {
-            key: import.meta.env.VITE_TRELLO_API_KEY,
-            token: import.meta.env.VITE_TRELLO_TOKEN,
-          },
-        }
-      );
-      setCards(response.data);
+      const data = await getCards(list.id,navigate); // Use getCards
+      setCards(data);
     } catch (error) {
-      console.error("Error fetching cards:", error);
+      navigate('/ErrorPage'); // Navigate on error
     }
   };
 
   const handleAddCard = async () => {
     if (newCardName.trim() === "") return;
-    try {
-      const response = await axios.post(
-        `https://api.trello.com/1/cards`,
-        { name: newCardName, idList: list.id },
-        {
-          params: {
-            key: import.meta.env.VITE_TRELLO_API_KEY,
-            token: import.meta.env.VITE_TRELLO_TOKEN,
-          },
-        }
-      );
-      setCards((prevCards) => [...prevCards, response.data]);
+    const cardData = await createCard(list.id, newCardName, navigate); // Use createCard
+    if (cardData) {
+      setCards((prevCards) => [...prevCards, cardData]);
       setShowAddCardInput(false);
       setNewCardName("");
-    } catch (error) {
-      console.error("Error adding card:", error);
     }
   };
 
@@ -75,7 +56,6 @@ const List = ({ list, setLists }) => {
         {list.name}
       </Typography>
 
-      {/* Include the DeleteList component */}
       <DeleteList list={list} setLists={setLists} />
 
       <MuiList sx={{ marginTop: "10px" }}>

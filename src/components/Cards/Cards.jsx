@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { ListItem, ListItemText } from "@mui/material";
-import CardDetailsDialog from "./CardDetailsDialog";
+import CardDetailsDialog from "../Checklist/CardDetailsDialog";
 import DeleteCard from "./DeleteCard";
 
 const Cards = ({ card, setCards }) => {
