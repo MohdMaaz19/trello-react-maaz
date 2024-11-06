@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { ListItem, ListItemText } from "@mui/material";
+
 import CardDetailsDialog from "../Checklist/CardDetailsDialog";
 import DeleteCard from "./DeleteCard";
 

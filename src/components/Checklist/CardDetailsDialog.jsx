@@ -1,8 +1,10 @@
-import { React, useState, useEffect } from "react";
-import { Dialog, DialogTitle, DialogContent } from "@mui/material";
+import React, { useState, useEffect } from "react";
+import { Dialog, DialogTitle, DialogContent, IconButton } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
+
 import AllChecklist from "./AllChecklist";
 import CreateChecklist from "./CreateChecklist";
-import { fetchChecklists } from "../../API/checklistApi"; // Import the API function
+import { fetchChecklists } from "../../API/checklistApi"; 
 
 const CardDetailsDialog = ({ open, onClose, card, navigate }) => {
   const [checklists, setChecklists] = useState([]);
@@ -22,7 +24,12 @@ const CardDetailsDialog = ({ open, onClose, card, navigate }) => {
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
-      <DialogTitle>{card.name}</DialogTitle>
+      <DialogTitle sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        {card.name}
+        <IconButton onClick={onClose}>
+          <CloseIcon />
+        </IconButton>
+      </DialogTitle>
       <DialogContent>
         <CreateChecklist cardId={card.id} setChecklists={setChecklists} />
         <AllChecklist

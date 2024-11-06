@@ -1,21 +1,21 @@
 import React, { useState } from "react";
 import { Box, Paper, TextField, Button, IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import { createList } from "../../API/listApi"; // Import the createList function
+import { createList } from "../../API/listApi"; 
 
-const CreateList = ({ setIsAdding, setLists, boardId, navigate }) => { // Add navigate as a prop
-  const [newListName, setNewListName] = useState(""); // State for the new list name
+const CreateList = ({ setIsAdding, setLists, boardId, navigate }) => { 
+  const [newListName, setNewListName] = useState(""); 
 
   const handleAddList = async () => {
-    if (newListName.trim() === "") return; // Prevent empty lists
+    if (newListName.trim() === "") return; 
     try {
-      const newList = await createList(boardId, newListName, navigate); // Use createList
+      const newList = await createList(boardId, newListName, navigate); 
       setLists((previousList) => [...previousList, newList]);
       setNewListName("");
       setIsAdding(false);
     } catch (error) {
       console.error("Error adding new list:", error.message);
-      navigate('/ErrorPage'); // Navigate to error page on error
+      navigate('/ErrorPage'); 
     }
   };
 

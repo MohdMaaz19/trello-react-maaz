@@ -7,8 +7,9 @@ import {
   TextField,
   Button,
 } from "@mui/material";
-import { createBoard } from "../../API/boardsApi"; 
 import { useNavigate } from "react-router-dom"; 
+
+import { createBoard } from "../../API/boardsApi"; 
 
 const CreateBoard = ({ open, handleClose, setBoards }) => {
   const [newBoardName, setNewBoardName] = useState("");

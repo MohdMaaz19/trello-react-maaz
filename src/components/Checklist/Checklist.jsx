@@ -1,7 +1,8 @@
 import React from "react";
 import { ListItem, ListItemText, Box } from "@mui/material";
-import ChecklistItems from "../CheckListItems/ChecklistItems"; // Import the new component
-import DeleteChecklist from "./DeleteChecklist"; // Import the DeleteChecklist component
+
+import ChecklistItems from "../CheckListItems/ChecklistItems"; 
+import DeleteChecklist from "./DeleteChecklist"; 
 
 const Checklist = ({ card, checklist, setChecklists }) => {
   return (

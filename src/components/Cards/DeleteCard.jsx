@@ -1,8 +1,9 @@
 import React from "react";
 import { IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { deleteCard } from "../../API/cardsApi";
 import { useNavigate } from "react-router-dom";
+
+import { deleteCard } from "../../API/cardsApi";
 
 const DeleteCard = ({ card, setCards }) => {
   const navigate = useNavigate();

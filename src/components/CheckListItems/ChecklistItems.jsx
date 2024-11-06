@@ -1,32 +1,23 @@
 import React, { useEffect, useState } from "react";
 import { List, Box, LinearProgress, Typography } from "@mui/material";
-import axios from "axios";
+
+import { fetchCheckItems } from "../../API/checklistItemsApi"; 
 import ChecklistItem from "./ChecklistItem";
 import CreateChecklistItem from "./CreateChecklistItem";
 
-const ChecklistItems = ({ checklistId, card }) => {
+const ChecklistItems = ({ checklistId, card, navigate }) => {
   const [checkItems, setCheckItems] = useState([]);
 
   useEffect(() => {
-    const fetchCheckItems = async () => {
-      try {
-        const response = await axios.get(
-          `https://api.trello.com/1/checklists/${checklistId}/checkItems`,
-          {
-            params: {
-              key: import.meta.env.VITE_TRELLO_API_KEY,
-              token: import.meta.env.VITE_TRELLO_TOKEN,
-            },
-          }
-        );
-        setCheckItems(response.data);
-      } catch (error) {
-        console.error("Error fetching check items:", error);
+    const getCheckItems = async () => {
+      const items = await fetchCheckItems(checklistId, navigate);
+      if (items) {
+        setCheckItems(items);
       }
     };
 
-    fetchCheckItems();
-  }, [checklistId]);
+    getCheckItems();
+  }, [checklistId, navigate]);
 
   const completedItemsCount = checkItems.filter(
     (item) => item.state === "complete"

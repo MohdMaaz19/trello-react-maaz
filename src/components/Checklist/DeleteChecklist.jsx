@@ -1,29 +1,17 @@
-// DeleteChecklist.jsx
-
 import React from "react";
 import { IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
-import axios from "axios";
 
-const DeleteChecklist = ({ checklistId, setChecklists }) => {
+import { deleteChecklist } from "../../API/checklistApi"; 
+
+const DeleteChecklist = ({ checklistId, setChecklists, navigate }) => {
   const handleDeleteChecklist = async () => {
-    try {
-      await axios.delete(
-        `https://api.trello.com/1/checklists/${checklistId}`,
-        {
-          params: {
-            key: import.meta.env.VITE_TRELLO_API_KEY,
-            token: import.meta.env.VITE_TRELLO_TOKEN,
-          },
-        }
-      );
+    const deleteCheckList = await deleteChecklist(checklistId, navigate); 
 
-      // Update the checklists state after deletion
+    if (deleteCheckList) {
       setChecklists((prevChecklists) =>
         prevChecklists.filter((checklist) => checklist.id !== checklistId)
       );
-    } catch (error) {
-      console.error("Error deleting checklist:", error);
     }
   };
 

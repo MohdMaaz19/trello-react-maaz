@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { IconButton, Menu, MenuItem } from "@mui/material";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
-import { deleteList } from "../../API/listApi"; // Import deleteList
 
+import { deleteList } from "../../API/listApi"; 
 const DeleteList = ({ list, setLists, navigate }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -11,11 +11,11 @@ const DeleteList = ({ list, setLists, navigate }) => {
   const handleClose = () => setAnchorEl(null);
 
   const handleArchiveList = async () => {
-    const success = await deleteList(list.id, navigate); // Use deleteList function
+    const success = await deleteList(list.id, navigate); 
     if (success) {
       setLists((previousList) => previousList.filter((l) => l.id !== list.id));
     }
-    handleClose(); // Close the menu after action
+    handleClose(); 
   };
 
   return (

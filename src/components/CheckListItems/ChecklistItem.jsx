@@ -1,33 +1,19 @@
 import React from "react";
 import { ListItem, ListItemText, Checkbox } from "@mui/material";
+
 import DeleteChecklistItem from "./DeleteChecklistItem";
-import axios from "axios";
+import { toggleCheckItem } from "../../API/checklistItemsApi"; 
 
-const ChecklistItem = ({ card, item, setCheckItems, checklistId }) => {
+const ChecklistItem = ({ card, item, setCheckItems, checklistId, navigate }) => {
   const handleToggleCheckItem = async () => {
-    try {
-      const newState = item.state === "complete" ? "incomplete" : "complete";
-      await axios.put(
-        `https://api.trello.com/1/cards/${card.id}/checkItem/${item.id}`,
-        { state: newState },
-        {
-          params: {
-            key: import.meta.env.VITE_TRELLO_API_KEY,
-            token: import.meta.env.VITE_TRELLO_TOKEN,
-          },
-        }
-      );
-
-      // Update the state of check items locally
+    const newState = await toggleCheckItem(card.id, item.id, item.state, navigate);
+    
+    if (newState) {
       setCheckItems((prevItems) =>
         prevItems.map((checkItem) =>
-          checkItem.id === item.id
-            ? { ...checkItem, state: newState }
-            : checkItem
+          checkItem.id === item.id ? { ...checkItem, state: newState } : checkItem
         )
       );
-    } catch (error) {
-      console.error("Error toggling check item:", error);
     }
   };
 
@@ -42,6 +28,7 @@ const ChecklistItem = ({ card, item, setCheckItems, checklistId }) => {
         item={item}
         setCheckItems={setCheckItems}
         checklistId={checklistId}
+        navigate={navigate}
       />
     </ListItem>
   );

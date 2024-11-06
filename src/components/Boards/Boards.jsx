@@ -1,16 +1,17 @@
 import { useEffect, useState, useCallback } from "react";
-import { Box, Paper, Typography, CircularProgress } from "@mui/material"; 
-import Board from "./Board";
-import CreateBoard from "./CreateBoard";
+import { Box, Paper, Typography, CircularProgress } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import Grid from "@mui/material/Grid2";
+
+import Board from "./Board";
+import CreateBoard from "./CreateBoard";
 import { getBoards } from "../../API/boardsApi";
 
 const Boards = () => {
   const navigate = useNavigate();
   const [boards, setBoards] = useState([]);
   const [open, setOpen] = useState(false);
-  const [loading, setLoading] = useState(true); 
+  const [loading, setLoading] = useState(true);
 
   const handleBoardClick = (boardId) => {
     navigate(`boards/${boardId}`);
@@ -18,13 +19,13 @@ const Boards = () => {
 
   useEffect(() => {
     const loadBoards = async () => {
-      setLoading(true); 
-      await getBoards(navigate).then(data => {
+      setLoading(true);
+      await getBoards(navigate).then((data) => {
         if (data) {
-          setBoards(data); 
+          setBoards(data);
         }
       });
-      setLoading(false); 
+      setLoading(false);
     };
     loadBoards();
   }, [navigate]);
@@ -39,16 +40,16 @@ const Boards = () => {
 
   if (loading) {
     return (
-      <Box 
+      <Box
         p={4}
         sx={{
-          display: 'flex', 
-          justifyContent: 'center', 
-          alignItems: 'center', 
-          height: '100vh'
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
         }}
       >
-        <CircularProgress /> 
+        <CircularProgress />
       </Box>
     );
   }

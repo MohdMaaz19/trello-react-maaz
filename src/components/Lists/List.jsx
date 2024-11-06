@@ -7,9 +7,10 @@ import {
   TextField,
   Box,
 } from "@mui/material";
+
 import Cards from "../Cards/Cards";
-import DeleteList from "./DeleteList"; 
-import { createCard,getCards} from "../../API/cardsApi"
+import DeleteList from "./DeleteList";
+import { createCard, getCards } from "../../API/cardsApi";
 
 const List = ({ list, setLists, navigate }) => {
   const [cards, setCards] = useState([]);
@@ -18,16 +19,16 @@ const List = ({ list, setLists, navigate }) => {
 
   const fetchCards = async () => {
     try {
-      const data = await getCards(list.id,navigate); // Use getCards
+      const data = await getCards(list.id, navigate);
       setCards(data);
     } catch (error) {
-      navigate('/ErrorPage'); // Navigate on error
+      navigate("/ErrorPage");
     }
   };
 
   const handleAddCard = async () => {
     if (newCardName.trim() === "") return;
-    const cardData = await createCard(list.id, newCardName, navigate); // Use createCard
+    const cardData = await createCard(list.id, newCardName, navigate);
     if (cardData) {
       setCards((prevCards) => [...prevCards, cardData]);
       setShowAddCardInput(false);

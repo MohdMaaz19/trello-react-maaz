@@ -26,3 +26,15 @@ export const createChecklist = async (cardId, checklistName, navigate) => {
     navigate('/ErrorPage'); // Navigate to error page
   }
 };
+
+export const deleteChecklist = async (checklistId, navigate) => {
+  try {
+    await axios.delete(
+      `${BASE_URL}/checklists/${checklistId}?key=${API_KEY}&token=${TOKEN}`
+    );
+    return true; // Indicate success
+  } catch (error) {
+    navigate('/ErrorPage'); // Navigate to error page
+    return false; // Indicate failure
+  }
+};

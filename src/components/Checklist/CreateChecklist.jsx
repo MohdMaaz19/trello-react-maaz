@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { TextField, Button, Box } from "@mui/material";
-import { createChecklist } from "../../API/checklistApi"; // Import the API function
+
+import { createChecklist } from "../../API/checklistApi";
 
 const CreateChecklist = ({ cardId, setChecklists, navigate }) => {
   const [checklistName, setChecklistName] = useState("");

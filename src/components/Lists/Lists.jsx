@@ -1,25 +1,26 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Box, Paper, Typography, CircularProgress } from "@mui/material";
+
 import List from "./List";
 import CreateList from "./CreateList";
-import { getLists } from "../../API/listApi"; // Import the getLists function
+import { getLists } from "../../API/listApi"; 
 
 const Lists = () => {
   const [lists, setLists] = useState([]);
   const [isAdding, setIsAdding] = useState(false);
   const [loading, setLoading] = useState(true); 
   const { boardId } = useParams();
-  const navigate = useNavigate(); // Initialize navigate
+  const navigate = useNavigate(); 
 
   useEffect(() => {
     const fetchLists = async () => {
       setLoading(true);
       try {
-        const data = await getLists(boardId); // Use the getLists function
+        const data = await getLists(boardId); 
         setLists(data);
       } catch (error) {
-        navigate('/ErrorPage'); // Navigate to error page on error
+        navigate('/ErrorPage'); 
       } finally {
         setLoading(false);
       }
